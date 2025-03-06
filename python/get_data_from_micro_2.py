@@ -126,6 +126,7 @@ def main():
                 try:
                     data = ser.readline().decode('utf-8', errors="ignore").strip()
                     # i = i+1
+                    print(data)
                     if data:
                         string_data = string_data + data
                         loop_i = 0
