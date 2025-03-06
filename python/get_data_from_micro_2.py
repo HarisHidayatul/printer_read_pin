@@ -1,4 +1,6 @@
 import serial
+import time
+
 from package.open_close_file import open_close_file
 from package.data_arduino import data_arduino
 from package.coordinate_generate import coordinate_generate
@@ -115,37 +117,40 @@ def process_string_data_function(string_data):
 PORT = "/dev/ttyUSB0"  # Gunakan /dev/ttyS0 jika pakai UART bawaan, atau /dev/ttyUSB0 untuk modul USB-Serial
 BAUDRATE = 500000
 
+
 def main():    
-    loop_i = int(0)
+    loop_i = 0
     string_data = ""
-    # raw_data = open_close_file("file_processing/raw_data.txt")
+    last_data_time = time.time()  # Simpan waktu terakhir menerima data
+
     try:
         with serial.Serial(PORT, BAUDRATE, timeout=1) as ser:
             print(f"Membuka port {PORT} dengan baudrate {BAUDRATE}")
             while True:
                 try:
                     data = ser.readline().decode('utf-8', errors="ignore").strip()
-                    # i = i+1
-                    # print(data)
+                    
                     if data:
-                        string_data = string_data + data
+                        string_data += data
                         print(string_data)
-                        loop_i = 0
+                        loop_i = 0  # Reset counter
+                        last_data_time = time.time()  # Perbarui waktu terakhir data masuk
                     else:
-                        if loop_i > 500:
-                            process_string_data_function(string_data)
-                            print(string_data)
-                            string_data = ""
-                            loop_i = 0
-                        else:
-                            loop_i = loop_i + 1
+                        loop_i += 1
+
+                        # Cek jika lebih dari 500 iterasi * timeout = sekitar 5 detik tanpa data
+                        if (time.time() - last_data_time) > 5:  
+                            if string_data:
+                                process_string_data_function(string_data)
+                                print("Proses data:", string_data)
+                                string_data = ""  # Reset setelah diproses
+                            loop_i = 0  # Reset counter setelah timeout
+
                 except KeyboardInterrupt:
                     print("\nMenutup koneksi serial...")
                     break
     except serial.SerialException as e:
-        print(f"Gagal membuka port: {e}")
-        # sys.exit(1)
-    
+        print(f"Gagal membuka port: {e}")    
 
 if __name__ == "__main__":
     main()
