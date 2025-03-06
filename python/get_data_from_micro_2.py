@@ -129,6 +129,7 @@ def main():
                     # print(data)
                     if data:
                         string_data = string_data + data
+                        print(string_data)
                         loop_i = 0
                     else:
                         if loop_i > 500:
