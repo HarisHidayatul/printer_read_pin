@@ -2,11 +2,12 @@ import serial
 from package.open_close_file import open_close_file
 
 # Konfigurasi port dan baudrate
-PORT = "COM6"  # Ganti sesuai dengan port yang digunakan
+PORT = "COM4"  # Ganti sesuai dengan port yang digunakan
 BAUDRATE = 500000
 
+loop_i = int(0)
+
 def main():    
-    loop_i = int(0)
     raw_data = open_close_file("file_processing/raw_data.txt")
     try:
         with serial.Serial(PORT, BAUDRATE, timeout=1) as ser:
@@ -14,18 +15,10 @@ def main():
             while True:
                 try:
                     data = ser.readline().decode('utf-8', errors="ignore").strip()
-                    if data:
-                        print(data)
-                        raw_data.append_string(data)
-                        loop_i =0
-                    else:
-                        if loop_i > 15000:
-                             # Jika 3 detik tidak ada data, maka convert data
-                             
-                            loop_i=0
-                        loop_i = loop_i+1
-                    # print(data)
-                    # raw_data.append_string(data)
+                    # i = i+1
+                    
+                    print(data)
+                    raw_data.append_string(data)
                 except KeyboardInterrupt:
                     print("\nMenutup koneksi serial...")
                     break

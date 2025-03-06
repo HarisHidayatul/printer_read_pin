@@ -25,11 +25,12 @@ class data_arduino:
             if charData == '#':
                 self.tail_found: True
                 # print(len(self.data_temp))
-                # print(self.data_temp)
-                if len(self.data_temp) == 17:
+                # print(self.data_temp, )
+                if len(self.data_temp) == 22:
                     if self.verify_xor_checksum(self.data_temp):
                         self.isValidData = True
-                        self.data = self.data_temp[1:14]
+                        self.data = self.data_temp[1:19]
+                        # print(self.data,self.data[1:14])
                         self.idDevice = int(self.data[0])
                         
                         biner_data_PORTA = self.hex_to_binary(self.data[1:3])[::-1]  # Balik hasil biner dimulai dari 0 sampai 7
@@ -37,34 +38,38 @@ class data_arduino:
                         biner_data_PORTL = self.hex_to_binary(self.data[5:7])[::-1]  # Balik hasil biner dimulai dari 0 sampai 7
                         biner_data_PORTB = self.hex_to_binary(self.data[7:9])[::-1]  # Balik hasil biner dimulai dari 0 sampai 7
                         
-                        all_port = biner_data_PORTA + biner_data_PORTC+biner_data_PORTL+biner_data_PORTB
+                        biner_data_PORTF = self.hex_to_binary(self.data[9:11])[::-1]  # Balik hasil biner dimulai dari 0 sampai 7
+                        biner_data_PORTK = self.hex_to_binary(self.data[11:13])[::-1]  # Balik hasil biner dimulai dari 0 sampai 7
+                        biner_data_PORTD = self.hex_to_binary(self.data[13:14])[::-1]  # Balik hasil biner dimulai dari 0 sampai 7
+
+                        all_port = biner_data_PORTA + biner_data_PORTC+biner_data_PORTL+biner_data_PORTB+biner_data_PORTF+biner_data_PORTK+biner_data_PORTD
                         loop_data = 0
 
                         #Optimasi untuk menghilangkan pin error
                         total = sum(int(digit) for digit in all_port)
                         if total > 2:
                             if self.temp_data_before != all_port:
-                                timer_arduino = int(self.data[9:13],16)
+                                timer_arduino = int(self.data[15:19],16)
                                 timer_arduino = timer_arduino  - 32768
                                 timer_selisih = min(abs(int(timer_arduino)-int(self.temp_time_arduino)),abs(int(self.temp_time_arduino)-int(timer_arduino)))
                                 self.timer_selisih = timer_selisih
                                 self.temp_time_arduino = timer_arduino
                                 self.temp_data_before = all_port
                                 return True
-                                if timer_selisih > 8:
-                                    print()
-                                    print()
+                                # if timer_selisih > 8:
+                                #     print()
+                                #     print()
 
-                                for loop_port in all_port:
-                                    if loop_data%5 == 0:
-                                        print('  ',end='')
-                                    if loop_port == '1':
-                                        print('X',end='')
-                                    else:
-                                        print(' ',end='')
-                                    loop_data = loop_data + 1
-                                print(' ',end='')
-                                print(all_port)
+                                # for loop_port in all_port:
+                                #     if loop_data%5 == 0:
+                                #         print('  ',end='')
+                                #     if loop_port == '1':
+                                #         print('X',end='')
+                                #     else:
+                                #         print(' ',end='')
+                                #     loop_data = loop_data + 1
+                                # print(' ',end='')
+                                # print(all_port)
                                 
                         return False
                         # print(all_port)
