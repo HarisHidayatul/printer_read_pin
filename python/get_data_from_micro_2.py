@@ -128,23 +128,18 @@ def main():
             print(f"Membuka port {PORT} dengan baudrate {BAUDRATE}")
             while True:
                 try:
-                    data = ser.readline().decode('utf-8', errors="ignore").strip()
-                    
-                    if data:
+                    if ser.in_waiting > 0:  # Mengecek apakah ada data di buffer
+                        data = ser.read(ser.in_waiting).decode('utf-8', errors="ignore").strip()
                         string_data += data
-                        print(string_data)
-                        loop_i = 0  # Reset counter
-                        last_data_time = time.time()  # Perbarui waktu terakhir data masuk
+                        loop_i = 0
                     else:
                         loop_i += 1
-
-                        # Cek jika lebih dari 500 iterasi * timeout = sekitar 5 detik tanpa data
-                        if (time.time() - last_data_time) > 1:  
+                        if loop_i > 1000:
                             if string_data:
                                 process_string_data_function(string_data)
                                 print("Proses data:", string_data)
-                                string_data = ""  # Reset setelah diproses
-                            loop_i = 0  # Reset counter setelah timeout
+                                string_data = ""
+                            loop_i=0
 
                 except KeyboardInterrupt:
                     print("\nMenutup koneksi serial...")
