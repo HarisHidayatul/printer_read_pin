@@ -139,7 +139,7 @@ def main():
                         loop_i += 1
 
                         # Cek jika lebih dari 500 iterasi * timeout = sekitar 5 detik tanpa data
-                        if (time.time() - last_data_time) > 5:  
+                        if (time.time() - last_data_time) > 1:  
                             if string_data:
                                 process_string_data_function(string_data)
                                 print("Proses data:", string_data)
