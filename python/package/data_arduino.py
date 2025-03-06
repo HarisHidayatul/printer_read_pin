@@ -13,6 +13,7 @@ class data_arduino:
         self.header_found = False
         self.tail_found = False
         self.data_temp = ""
+        self.timer_selisih = int(0)
 
     def hex_to_binary(self,hex_string):
         return ''.join(f"{int(char, 16):04b}" for char in hex_string.upper())
@@ -46,7 +47,10 @@ class data_arduino:
                                 timer_arduino = int(self.data[9:13],16)
                                 timer_arduino = timer_arduino  - 32768
                                 timer_selisih = min(abs(int(timer_arduino)-int(self.temp_time_arduino)),abs(int(self.temp_time_arduino)-int(timer_arduino)))
+                                self.timer_selisih = timer_selisih
                                 self.temp_time_arduino = timer_arduino
+                                self.temp_data_before = all_port
+                                return True
                                 if timer_selisih > 8:
                                     print()
                                     print()
@@ -61,7 +65,8 @@ class data_arduino:
                                     loop_data = loop_data + 1
                                 print(' ',end='')
                                 print(all_port)
-                                self.temp_data_before = all_port
+                                
+                        return False
                         # print(all_port)
                         # print(self.data_temp, self.data, self.idDevice, self.data[1:3], self.data[3:5], self.data[5:7], self.data[7:9])
                     else:

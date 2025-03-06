@@ -19,7 +19,9 @@ def main():
                         raw_data.append_string(data)
                         loop_i =0
                     else:
-                        if loop_i > 50000:
+                        if loop_i > 15000:
+                             # Jika 3 detik tidak ada data, maka convert data
+                             
                             loop_i=0
                         loop_i = loop_i+1
                     # print(data)
