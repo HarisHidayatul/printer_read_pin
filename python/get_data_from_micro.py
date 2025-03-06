@@ -16,7 +16,7 @@ def main():
                 try:
                     data = ser.readline().decode('utf-8', errors="ignore").strip()
                     # i = i+1
-                    
+
                     print(data)
                     raw_data.append_string(data)
                 except KeyboardInterrupt:
