@@ -126,13 +126,15 @@ def main():
                 try:
                     data = ser.readline().decode('utf-8', errors="ignore").strip()
                     # i = i+1
-                    print(data)
+                    # print(data)
                     if data:
                         string_data = string_data + data
                         loop_i = 0
                     else:
-                        if loop_i > 15000:
+                        if loop_i > 500:
                             process_string_data_function(string_data)
+                            print(string_data)
+                            string_data = ""
                             loop_i = 0
                         else:
                             loop_i = loop_i + 1
