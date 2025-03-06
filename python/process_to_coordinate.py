@@ -12,7 +12,7 @@ def main():
     raw_data = open_close_file("file_processing/raw_data.txt")
     result_data = open_close_file("file_processing/result_data.txt")
     # print(raw_data.read_txt_file())
-    string_data = ""
+    string_result_data = ""
     for read_character in raw_data.read_txt_file():
     # for read_character in "@0000E3F4276#":
         # print(read_character)
@@ -23,18 +23,18 @@ def main():
             timer_selisih = process_data.timer_selisih
             loop_data = int(0)
             if timer_selisih > 8:
-                string_data = string_data + '\n'
-                string_data = string_data + '\n'
+                string_result_data = string_result_data + '\n'
+                string_result_data = string_result_data + '\n'
             for loop_port in data_port:
                 if loop_data%5 == 0:
-                    string_data = string_data + '  '
+                    string_result_data = string_result_data + '  '
                 if loop_port == '1':
-                    string_data = string_data + 'X'
+                    string_result_data = string_result_data + 'X'
                 else:
-                    string_data = string_data + ' '
+                    string_result_data = string_result_data + ' '
                     # print(' ',end='')
                 loop_data = loop_data + 1
-            string_data = string_data + '\n'
+            string_result_data = string_result_data + '\n'
             # print()
     # print(string_data)
     
@@ -42,7 +42,7 @@ def main():
     data_detect = False
     temp_data = []
     string_data = []
-    for loop_row in string_data.split("\n"):
+    for loop_row in string_result_data.split("\n"):
         if enter_detect:
             if loop_row.strip() == "":
                 if data_detect:
