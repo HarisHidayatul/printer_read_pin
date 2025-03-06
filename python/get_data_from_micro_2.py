@@ -134,13 +134,13 @@ def main():
                         loop_i = 0
                     else:
                         loop_i += 1
-                        if loop_i > 5000:
+                        if loop_i > 20000:
                             if string_data:
                                 process_string_data_function(string_data)
                                 print("Proses data:", string_data)
                                 string_data = ""
                             loop_i=0
-
+                            
                 except KeyboardInterrupt:
                     print("\nMenutup koneksi serial...")
                     break
