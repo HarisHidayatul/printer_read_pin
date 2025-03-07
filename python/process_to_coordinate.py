@@ -7,7 +7,7 @@ from package.printer_control import printer_control
 
 printing = printer_control(0x04b8, 0x0202)
 
-def downsample_character(string_data, factor_h=2, factor_w=1):
+def downsample_character(string_data, factor_h=2):
     lines = [line for line in string_data.strip().split("\n")]
     
     original_height = len(lines)
@@ -16,25 +16,27 @@ def downsample_character(string_data, factor_h=2, factor_w=1):
     # Pastikan semua baris memiliki lebar yang sama (padding jika perlu)
     lines = [line.ljust(original_width) for line in lines]
 
-    # Tentukan ukuran baru
-    new_height = original_height // factor_h
-    new_width = original_width // factor_w
+    # Tentukan kolom yang akan difilter
+    columns_to_keep = set()
+    for start in range(0, original_width, 6):
+        for col in range(start, min(start + 5, original_width)):
+            columns_to_keep.add(col)
 
     # Buffer untuk menyimpan hasil
     downsampled = []
 
-    # Iterasi dengan langkah `factor_h` untuk tinggi dan `factor_w` untuk lebar
+    # Iterasi dengan langkah `factor_h` untuk tinggi
     for i in range(0, original_height - factor_h + 1, factor_h):
         new_line = ""
-        for j in range(0, original_width - factor_w + 1, factor_w):
-            # Ambil blok (factor_h x factor_w)
-            block = [lines[i + k][j:j+factor_w] for k in range(factor_h) if i + k < original_height]
-            
-            # Jika ada 'X' dalam blok, pertahankan bentuk
-            if any("X" in row for row in block):
-                new_line += "X"
+        for j in range(original_width):
+            if j in columns_to_keep:
+                # Ambil blok (factor_h tinggi)
+                block = [lines[i + k][j] for k in range(factor_h) if i + k < original_height]
+                
+                # Jika ada 'X' dalam blok, pertahankan bentuk
+                new_line += "X" if "X" in block else " "
             else:
-                new_line += " "  # Atau bisa juga " "
+                new_line += " "  # Pertahankan lebar dengan spasi
         
         downsampled.append(new_line)
 
@@ -61,8 +63,9 @@ def main():
                 string_result_data = string_result_data + '\n'
                 string_result_data = string_result_data + '\n'
             for loop_port in data_port:
-                if loop_data%5 == 0:
-                    string_result_data = string_result_data + '    '
+                if loop_data != 0:
+                    if loop_data%5 == 0:
+                        string_result_data = string_result_data + '   '
                 if loop_port == '1':
                     string_result_data = string_result_data + 'X'
                 else:
