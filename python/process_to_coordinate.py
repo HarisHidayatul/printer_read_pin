@@ -13,6 +13,10 @@ def downsample_character(string_data, factor_h=2):
     original_height = len(lines)
     original_width = max(len(line) for line in lines)
 
+    # Jika tinggi kurang atau sama dengan 8, jangan lakukan filtering
+    if original_height <= 8:
+        return string_data
+
     # Pastikan semua baris memiliki lebar yang sama (padding jika perlu)
     lines = [line.ljust(original_width) for line in lines]
 
@@ -76,7 +80,7 @@ def main():
             # print()
     # print(string_result_data)
     filter_downsample_character = "\n\n" + downsample_character(string_result_data)
-    print(filter_downsample_character)
+    # print(filter_downsample_character)
     enter_detect = False
     data_detect = False
     temp_data = []
