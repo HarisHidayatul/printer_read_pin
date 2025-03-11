@@ -63,7 +63,7 @@ void sending_data(){
   send_data[22] = '\n';
 
   for(int i = 0;i<3;i++){
-    Serial.write(send_data, 23);
+    Serial2.write(send_data, 23);
   }
 
   temp_data_pinA = 0;
@@ -83,10 +83,14 @@ ISR(TIMER1_COMPA_vect) {
   if(or_all_data > 0){
     sending_data();
   }
+  // sending_data();
+  digitalWrite(2,HIGH);
+  digitalWrite(2,LOW);
 }
 
 void setup() {
   Serial.begin(500000);
+  Serial2.begin(2000000);
   DDRA = 0x00;  PORTA = 0xFF;  // Set PORTA sebagai input dengan pull-up
   DDRC = 0x00;  PORTC = 0xFF;  // Set PORTC sebagai input dengan pull-up
   DDRL = 0x00;  PORTL = 0xFF;  // Set PORTL sebagai input dengan pull-up
@@ -117,6 +121,8 @@ void setup() {
   TCCR1B |= (1 << CS11) | (1 << CS10); // Prescaler 64
   TIMSK1 |= (1 << OCIE1A); // Aktifkan Timer1 Compare Match A interrupt
   interrupts();            // Aktifkan kembali interrupt
+
+  pinMode(2,OUTPUT);
 }
 
 void loop() {

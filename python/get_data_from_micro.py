@@ -2,7 +2,7 @@ import serial
 from package.open_close_file import open_close_file
 
 # Konfigurasi port dan baudrate
-PORT = "COM4"  # Ganti sesuai dengan port yang digunakan
+PORT = "COM6"  # Ganti sesuai dengan port yang digunakan
 BAUDRATE = 500000
 
 loop_i = int(0)

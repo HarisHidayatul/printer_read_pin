@@ -58,10 +58,32 @@ def main():
         # process_data.process_string_data(read_character)
         if(process_data.process_string_data(read_character)):
             # coordinate_raw.append_csv([process_data.address,process_data.abcde,process_data.timer])
+            # print("Data Masuk")
             data_port = process_data.temp_data_before
             timer_selisih = process_data.timer_selisih
+            
             loop_data = int(0)
             if timer_selisih > 8:
+                # loop_i = 0
+                # for i in range(0,10):
+                #     for j in range(0,10):
+                #         if (j == 0)&(i == 0):
+                #             continue
+                #         if loop_i%5 == 0:
+                #             string_result_data = string_result_data+ '   '
+                #         loop_i = loop_i + 1
+                #         string_result_data = string_result_data+ str(i)
+                # string_result_data = string_result_data + '\n'
+                
+                # loop_i = 0
+                # for i in range(0,10):
+                #     for j in range(0,10):
+                #         if (j == 0)&(i == 0):
+                #             continue
+                #         if loop_i%5 == 0:
+                #             string_result_data = string_result_data+ '   '
+                #         loop_i = loop_i + 1
+                #         string_result_data = string_result_data+ str(j)
                 string_result_data = string_result_data + '\n'
                 string_result_data = string_result_data + '\n'
                 string_result_data = string_result_data + '\n'
@@ -76,45 +98,45 @@ def main():
                     string_result_data = string_result_data + ' '
                     # print(' ',end='')
                 loop_data = loop_data + 1
-            string_result_data = string_result_data + '\n' #+ '  ' + str(timer_selisih)
+            string_result_data = string_result_data+ '  ' + '\n' #+ str(timer_selisih) + '\n' 
             # print()
     # print(string_result_data)
     filter_downsample_character = "\n\n" + downsample_character(string_result_data)
-    # print(filter_downsample_character)
-    enter_detect = False
-    data_detect = False
-    temp_data = []
-    string_data = []
-    for loop_row in filter_downsample_character.split("\n"):
-        if enter_detect:
-            if loop_row.strip() == "":
-                if data_detect:
-                    # break
-                    temp_data.append(string_data)
-                    enter_detect = False
-                    data_detect = False
-                    string_data = []
-                else:
-                    continue
-            else:
-                data_detect = True
-                string_data.append(loop_row)
-        else:
-            if loop_row.strip() == "":
-                # print("Enter")
-                enter_detect = True
-    for loop_data in temp_data:
-        # List untuk menyimpan koordinat (x, y)
-        coordinates = []
+    print(filter_downsample_character)
+    # enter_detect = False
+    # data_detect = False
+    # temp_data = []
+    # string_data = []
+    # for loop_row in filter_downsample_character.split("\n"):
+    #     if enter_detect:
+    #         if loop_row.strip() == "":
+    #             if data_detect:
+    #                 # break
+    #                 temp_data.append(string_data)
+    #                 enter_detect = False
+    #                 data_detect = False
+    #                 string_data = []
+    #             else:
+    #                 continue
+    #         else:
+    #             data_detect = True
+    #             string_data.append(loop_row)
+    #     else:
+    #         if loop_row.strip() == "":
+    #             # print("Enter")
+    #             enter_detect = True
+    # for loop_data in temp_data:
+    #     # List untuk menyimpan koordinat (x, y)
+    #     coordinates = []
 
-        # Baris terbawah menjadi y = 0
-        max_y = len(loop_data) - 1
+    #     # Baris terbawah menjadi y = 0
+    #     max_y = len(loop_data) - 1
 
-        for y, row in enumerate(reversed(loop_data)):  # Balik agar baris terbawah jadi y = 0
-            for x, char in enumerate(row):
-                if char == 'X':
-                    coordinates.append([x, y])  # Simpan koordinat (x, y)
-        printing.printing_byte(coordinates)
+    #     for y, row in enumerate(reversed(loop_data)):  # Balik agar baris terbawah jadi y = 0
+    #         for x, char in enumerate(row):
+    #             if char == 'X':
+    #                 coordinates.append([x, y])  # Simpan koordinat (x, y)
+    #     printing.printing_byte(coordinates)
 
 
 if __name__ == "__main__":

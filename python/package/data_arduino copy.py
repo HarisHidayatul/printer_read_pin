@@ -24,41 +24,34 @@ class data_arduino:
             self.data_temp += charData
             if charData == '#':
                 self.tail_found: True
-                # print(self.data_temp,len(self.data_temp))
-                if len(self.data_temp) == 35:
+                # print(len(self.data_temp))
+                # print(self.data_temp, )
+                if len(self.data_temp) == 22:
                     if self.verify_xor_checksum(self.data_temp):
                         self.isValidData = True
-                        self.data = self.data_temp[1:32]
-                        # print(self.data_temp, self.data,self.data[25:30],self.data[1:3])
+                        self.data = self.data_temp[1:19]
                         # print(self.data,self.data[1:14])
                         self.idDevice = int(self.data[0])
-                        all_port = ""
-                        # print(self.data_temp, end=' ')
-                        for i in range(0,13):
-                            # print(i*2+1,i*2+3)
-                            # print(self.data[i*2+1:i*2+3],end=' ')
-                            all_port = all_port + self.hex_to_binary(self.data[i*2+1:i*2+3])[::-1]
-                        # print()
-                        # biner_data_PORTA = self.hex_to_binary(self.data[1:3])[::-1]  # Balik hasil biner dimulai dari 0 sampai 7
-                        # biner_data_PORTC = self.hex_to_binary(self.data[3:5])[::-1]  # Balik hasil biner dimulai dari 0 sampai 7
-                        # biner_data_PORTL = self.hex_to_binary(self.data[5:7])[::-1]  # Balik hasil biner dimulai dari 0 sampai 7
-                        # biner_data_PORTB = self.hex_to_binary(self.data[7:9])[::-1]  # Balik hasil biner dimulai dari 0 sampai 7
                         
-                        # biner_data_PORTF = self.hex_to_binary(self.data[9:11])[::-1]  # Balik hasil biner dimulai dari 0 sampai 7
-                        # biner_data_PORTK = self.hex_to_binary(self.data[11:13])[::-1]  # Balik hasil biner dimulai dari 0 sampai 7
-                        # biner_data_PORTD = self.hex_to_binary(self.data[13:14])[::-1]  # Balik hasil biner dimulai dari 0 sampai 7
+                        biner_data_PORTA = self.hex_to_binary(self.data[1:3])[::-1]  # Balik hasil biner dimulai dari 0 sampai 7
+                        biner_data_PORTC = self.hex_to_binary(self.data[3:5])[::-1]  # Balik hasil biner dimulai dari 0 sampai 7
+                        biner_data_PORTL = self.hex_to_binary(self.data[5:7])[::-1]  # Balik hasil biner dimulai dari 0 sampai 7
+                        biner_data_PORTB = self.hex_to_binary(self.data[7:9])[::-1]  # Balik hasil biner dimulai dari 0 sampai 7
+                        
+                        biner_data_PORTF = self.hex_to_binary(self.data[9:11])[::-1]  # Balik hasil biner dimulai dari 0 sampai 7
+                        biner_data_PORTK = self.hex_to_binary(self.data[11:13])[::-1]  # Balik hasil biner dimulai dari 0 sampai 7
+                        biner_data_PORTD = self.hex_to_binary(self.data[13:14])[::-1]  # Balik hasil biner dimulai dari 0 sampai 7
 
-                        # all_port = biner_data_PORTA + biner_data_PORTC+biner_data_PORTL+biner_data_PORTB+biner_data_PORTF+biner_data_PORTK+biner_data_PORTD
+                        all_port = biner_data_PORTA + biner_data_PORTC+biner_data_PORTL+biner_data_PORTB+biner_data_PORTF+biner_data_PORTK+biner_data_PORTD
                         loop_data = 0
 
                         #Optimasi untuk menghilangkan pin error
                         total = sum(int(digit) for digit in all_port)
                         if total > 2:
                             if self.temp_data_before != all_port:
-                                timer_arduino = int(self.data[27:32],16)
+                                timer_arduino = int(self.data[15:19],16)
                                 timer_arduino = timer_arduino  - 32768
                                 timer_selisih = min(abs(int(timer_arduino)-int(self.temp_time_arduino)),abs(int(self.temp_time_arduino)-int(timer_arduino)))
-                                # print(self.data_temp,self.data[25:30],timer_arduino,timer_selisih,abs(int(timer_arduino)-int(self.temp_time_arduino)),abs(int(self.temp_time_arduino)-int(timer_arduino)))
                                 self.timer_selisih = timer_selisih
                                 self.temp_time_arduino = timer_arduino
                                 self.temp_data_before = all_port
